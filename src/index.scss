@@ -1,0 +1,13 @@
+@import "../src/styles/variables.scss";
+
+body {
+  background-color: $bg-color;
+  font-family: "Jost", sans-serif;
+}
+
+.container {
+  margin: 4rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
