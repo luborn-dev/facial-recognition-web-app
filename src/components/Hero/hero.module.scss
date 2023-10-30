@@ -1,0 +1,49 @@
+@import "../../styles/variables.scss";
+
+.heroContainer {
+  margin-top: 10rem;
+  word-break: break-all;
+  h2 {
+    font-size: 1.5rem;
+    color: $primary-color;
+  }
+}
+
+.inputFile {
+  display: none;
+}
+
+.customUpload {
+  color: $primary-color;
+  font-size: 1.5rem;
+  background-color: $secondary-color;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  &:hover {
+    background-color: #540505;
+  }
+}
+
+.submitBtn {
+  text-align: left;
+  color: $primary-color;
+  border: none;
+  font-size: 1.5rem;
+  background-color: $secondary-color;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  &:hover {
+    background-color: #540505;
+  }
+}
+
+.form {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: space-between;
+}

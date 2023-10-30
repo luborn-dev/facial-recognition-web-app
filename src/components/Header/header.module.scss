@@ -1,0 +1,13 @@
+@import "../../styles/variables.scss";
+
+.header {
+  word-break: break-all;
+  h1 {
+    font-size: 4rem;
+    color: $primary-color;
+  }
+  p {
+    color: $secondary-color;
+    font-size: 2rem;
+  }
+}
