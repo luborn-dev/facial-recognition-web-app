@@ -1,41 +1,47 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./hero.module.scss";
 import { Spin } from "antd";
 import { LoadingOutlined, StopOutlined } from "@ant-design/icons";
-
 import { CheckOutlined } from "@ant-design/icons";
 import { Result } from "antd";
+import WebcamModal from "../WebcamModal";
 
 const Hero = () => {
-  const refImg = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState();
+  const [selectedFile, setSelectedFile] = useState();
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const selectedFile = refImg.current.files[0];
-
-    if (selectedFile) {
-      console.log("Processando imagem...");
-      postImg(selectedFile);
-    } else {
-      console.log("Selecione uma imagem.");
-    }
+  const openCamera = () => {
+    setIsCameraOpen(true);
   };
 
-  const postImg = async (selectedFile) => {
+  const closeCamera = () => {
+    setIsCameraOpen(false);
+  };
+
+  const capturePhoto = (blob) => {
+    setSelectedFile(blob);
+    submitPhoto(blob);
+  };
+
+  const submitPhoto = async (file) => {
     setIsLoading(true);
+
     try {
       const formData = new FormData();
-      formData.append("file", selectedFile);
+      formData.append("file", file);
+
       const response = await fetch("http://0.0.0.0:3009/api/processar", {
         method: "POST",
         body: formData,
       });
+
       const data = await response.json();
-      console.log(data);
-      setResult(data);
+
+      if (data.mensagem === "Sucesso") {
+        setResult(data);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -57,30 +63,31 @@ const Hero = () => {
   return (
     <div className={styles.heroContainer}>
       <h2>ENVIE SUA FOTO PARA QUE POSSAMOS TE IDENTIFICAR</h2>
-      <form
-        className={styles.form}
-        onSubmit={(e) => {
-          handleSubmit(e);
-        }}
-      >
-        <label htmlFor="file-upload" className={styles.customUpload}>
-          SELECIONAR
-        </label>
-        <input
-          type="file"
-          id="file-upload"
-          accept=".jpg"
-          ref={refImg}
-          className={styles.inputFile}
-        />
-        <input
-          type="submit"
-          name=""
-          id=""
-          className={styles.submitBtn}
-          value="ENVIAR"
-        />
-      </form>
+      <div>
+        <button onClick={openCamera} className={styles.customUpload}>
+          Abrir Câmera
+        </button>
+      </div>
+
+      {result &&
+        (result.mensagem === "Sucesso" ? (
+          <Result
+            icon={<CheckOutlined style={{ color: "#700808" }} />}
+            title={`Acesso liberado para ${result.pessoa_prevista}`}
+          />
+        ) : (
+          <Result
+            icon={<StopOutlined style={{ color: "#700808" }} />}
+            title="Acesso bloqueado"
+          />
+        ))}
+
+      <WebcamModal
+        isOpen={isCameraOpen}
+        onRequestClose={closeCamera}
+        onCapture={capturePhoto}
+      />
+
       {isLoading ? (
         <Spin
           style={{
@@ -89,19 +96,6 @@ const Hero = () => {
           }}
           indicator={antIcon}
         />
-      ) : result ? (
-        result.mensagem === "Sucesso" ? (
-          <Result
-            icon={<CheckOutlined style={{ color: "#700808" }} />}
-            title="Acesso liberado para Lucas Borges"
-            // por enquanto ta hard coded, mas aqui vai ser o resultado da classificacao do modelo
-          />
-        ) : (
-          <Result
-            icon={<StopOutlined style={{ color: "#700808" }} />}
-            title="Acesso bloqueado"
-          />
-        )
       ) : null}
     </div>
   );

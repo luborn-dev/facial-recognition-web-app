@@ -1,19 +1,7 @@
 @import "../../styles/variables.scss";
 
-.heroContainer {
-  margin-top: 10rem;
-  word-break: break-all;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  h2 {
-    font-size: 1.5rem;
-    color: $primary-color;
-  }
-}
-
-.customUpload {
+.captureButton,
+.closeButton {
   color: $primary-color;
   font-size: 1.5rem;
   background-color: $secondary-color;
@@ -24,4 +12,8 @@
   &:hover {
     background-color: #540505;
   }
+}
+
+.webcam {
+  border-radius: 3rem;
 }
