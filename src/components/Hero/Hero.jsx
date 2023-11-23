@@ -9,7 +9,6 @@ import WebcamModal from "../WebcamModal";
 const Hero = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState();
-  const [selectedFile, setSelectedFile] = useState();
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const openCamera = () => {
@@ -21,7 +20,6 @@ const Hero = () => {
   };
 
   const capturePhoto = (blob) => {
-    setSelectedFile(blob);
     submitPhoto(blob);
   };
 
